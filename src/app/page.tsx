@@ -1,19 +1,32 @@
 "use client";
 
 import { Dice } from "@/components/dice";
-import { Button, Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
-import { useState } from "react";
+import { Button, Navbar, NavbarBrand, NavbarContent, Select, SelectItem } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [value, setValue] = useState(1);
+  // ダイスの数
+  const [numberOfDice, setNumberOfDice] = useState(1);
+  useEffect(() => {
+    setValue(new Array(numberOfDice).fill(1));
+  }, [numberOfDice])
+
+  // ダイスの目の値
+  const [value, setValue] = useState([1]);
+
+  // ダイスを振っているかどうか
   const [rolling, setRolling] = useState(false);
 
+  // ダイスを振るボタンが押された時の処理
   const onRollClick = () => {
     // １秒間rollingをtrueにする
     setRolling(true);
     setTimeout(() => {
       setRolling(false);
-      const newValue = Math.floor(Math.random() * 6) + 1;
+      let newValue: number[] = [];
+      for (let i = 0; i < numberOfDice; i++) {
+        newValue.push(Math.floor(Math.random() * 6) + 1);
+      }
       setValue(newValue);
     }, 1000);
 
@@ -33,8 +46,29 @@ export default function Home() {
           </NavbarBrand>
         </NavbarContent>
       </Navbar>
-      <main className="flex flex-col justify-center items-center">
-        <Dice value={value} rolling={rolling} />
+      <main className="flex flex-col justify-center items-center max-w-md mx-auto">
+        <div className="flex gap-4">
+          {value.map((value, index) => (
+            <Dice key={index + 1} value={value + 1} rolling={rolling} />
+          ))}
+        </div>
+        <Select
+          label="ダイスの数"
+          defaultSelectedKeys={["1"]}
+          onSelectionChange={(key) =>
+            setNumberOfDice(Number(key["currentKey"]))
+          }
+        >
+          <SelectItem key={1} value={1}>
+            1
+          </SelectItem>
+          <SelectItem key={2} value={2}>
+            2
+          </SelectItem>
+          <SelectItem key={3} value={3}>
+            3
+          </SelectItem>
+        </Select>
       </main>
       <Button
         color="primary"
