@@ -24,12 +24,27 @@ export default function Home() {
       <Navbar isBordered>
         <NavbarContent justify="center">
           <NavbarBrand>
-            <p className="text-2xl font-bold">DICE</p>
+            <p className="text-3xl font-extrabold tracking-wide">
+              <span className="text-transparent bg-clip-text bg-gradient-to-tr from-green-300 via-blue-500 to-purple-600">
+                Roll
+              </span>{" "}
+              it!
+            </p>
           </NavbarBrand>
         </NavbarContent>
       </Navbar>
-      <Dice value={value} rolling={rolling} />
-      <Button color="primary" size="lg" className="absolute bottom-8 left-4 w-[calc(100vw-32px)]" onClick={onRollClick}>ダイスを振る</Button>
-    </ div>
+      <main className="flex flex-col justify-center items-center">
+        <Dice value={value} rolling={rolling} />
+      </main>
+      <Button
+        color="primary"
+        size="lg"
+        className="absolute bottom-8 left-4 w-[calc(100vw-32px)]"
+        onClick={onRollClick}
+        isLoading={rolling}
+      >
+        ダイスを振る
+      </Button>
+    </div>
   );
 }
