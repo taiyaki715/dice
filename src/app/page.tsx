@@ -55,8 +55,9 @@ export default function Home() {
         <Select
           label="ダイスの数"
           defaultSelectedKeys={["1"]}
-          onSelectionChange={(key) =>
-            setNumberOfDice(Number(key["currentKey"]))
+          onSelectionChange={(key: any) => {
+            setNumberOfDice(Number(key["currentKey"]));
+          }
           }
         >
           <SelectItem key={1} value={1}>
