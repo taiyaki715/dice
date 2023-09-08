@@ -49,7 +49,7 @@ export default function Home() {
       <main className="flex flex-col justify-center items-center max-w-md mx-auto">
         <div className="flex gap-4">
           {value.map((value, index) => (
-            <Dice key={index + 1} value={value + 1} rolling={rolling} />
+            <Dice key={index} value={value} rolling={rolling} />
           ))}
         </div>
         <Select
