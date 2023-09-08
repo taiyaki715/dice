@@ -46,7 +46,7 @@ export default function Home() {
           </NavbarBrand>
         </NavbarContent>
       </Navbar>
-      <main className="flex flex-col justify-center items-center max-w-md mx-auto">
+      <main className="flex flex-col justify-center items-center px-4">
         <div className="flex gap-4">
           {value.map((value, index) => (
             <Dice key={index} value={value} rolling={rolling} />
