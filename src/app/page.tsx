@@ -6,10 +6,17 @@ import { useState } from "react";
 
 export default function Home() {
   const [value, setValue] = useState(1);
+  const [rolling, setRolling] = useState(false);
 
   const onRollClick = () => {
-    const newValue = Math.floor(Math.random() * 6) + 1;
-    setValue(newValue);
+    // １秒間rollingをtrueにする
+    setRolling(true);
+    setTimeout(() => {
+      setRolling(false);
+      const newValue = Math.floor(Math.random() * 6) + 1;
+      setValue(newValue);
+    }, 1000);
+
   }
 
   return (
@@ -21,7 +28,7 @@ export default function Home() {
           </NavbarBrand>
         </NavbarContent>
       </Navbar>
-      <Dice value={value} />
+      <Dice value={value} rolling={rolling} />
       <Button color="primary" size="lg" className="absolute bottom-8 left-4 w-[calc(100vw-32px)]" onClick={onRollClick}>ダイスを振る</Button>
     </ div>
   );
