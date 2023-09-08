@@ -18,7 +18,7 @@ export const Dice: React.FC<Props> = (props) => {
       const interval = setInterval(() => {
         const newValue = Math.floor(Math.random() * 6) + 1;
         setValue(newValue);
-      }, 100);
+      }, 50);
       return () => clearInterval(interval);
     }
   }, [props.rolling])
