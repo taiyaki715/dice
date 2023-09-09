@@ -43,7 +43,6 @@ export default function Home() {
   useEffect(() => {
     const numberCount = countNumbers(valueHistory);
     setNumberCount(numberCount);
-    console.log(numberCount);
   }, [valueHistory]);
 
   // ダイスを振っているかどうか
