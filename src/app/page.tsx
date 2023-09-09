@@ -3,6 +3,29 @@
 import { Dice } from "@/components/dice";
 import { Button, Navbar, NavbarBrand, NavbarContent, Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+import { rollDice } from "@/utils/rollDice";
+import { countNumbers } from "@/utils/countNumbers";
+import { Chart } from "@/components/chart";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function Home() {
   // ダイスの数
@@ -14,22 +37,34 @@ export default function Home() {
   // ダイスの目の値
   const [value, setValue] = useState([1]);
 
+  // ダイスの目の履歴
+  const [valueHistory, setValueHistory] = useState<number[][]>([]);
+  const [numberCount, setNumberCount] = useState<Record<number, number>>({});
+  useEffect(() => {
+    const numberCount = countNumbers(valueHistory);
+    setNumberCount(numberCount);
+    console.log(numberCount);
+  }, [valueHistory]);
+
   // ダイスを振っているかどうか
   const [rolling, setRolling] = useState(false);
 
   // ダイスを振るボタンが押された時の処理
   const onRollClick = () => {
-    // １秒間rollingをtrueにする
+    // rollingをtrueにする
     setRolling(true);
-    setTimeout(() => {
-      setRolling(false);
-      let newValue: number[] = [];
-      for (let i = 0; i < numberOfDice; i++) {
-        newValue.push(Math.floor(Math.random() * 6) + 1);
-      }
-      setValue(newValue);
-    }, 1000);
 
+    // 1秒後に実行
+    setTimeout(() => {
+      // rollingをfalseにする
+      setRolling(false);
+
+      const newValue = rollDice(numberOfDice);
+      // 新しいダイスの目の値をセット
+      setValue(newValue);
+      // 新しいダイスの目の履歴を追加
+      setValueHistory((prevValueHistory) => [...prevValueHistory, newValue]);
+    }, 1000);
   }
 
   return (
@@ -46,7 +81,7 @@ export default function Home() {
           </NavbarBrand>
         </NavbarContent>
       </Navbar>
-      <main className="flex flex-col justify-center items-center px-4">
+      <main className="flex flex-col gap-8 justify-center items-center px-4">
         <div className="flex gap-4">
           {value.map((value, index) => (
             <Dice key={index} value={value} rolling={rolling} />
@@ -70,6 +105,7 @@ export default function Home() {
             3
           </SelectItem>
         </Select>
+        <Chart data={numberCount} />
       </main>
       <Button
         color="primary"
