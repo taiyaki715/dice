@@ -25,6 +25,17 @@ interface Props {
 export const Chart: React.FC<Props> = (props) => {
   return (
     <Bar
+      options={{
+        plugins: {
+          title: {
+            display: true,
+            text: "目の統計",
+          },
+          legend: {
+            display: false,
+          }
+        }
+      }}
       data={{
         labels: ["1", "2", "3", "4", "5", "6"],
         datasets: [{ data: props.data, backgroundColor: "#2f6ee7" }],
